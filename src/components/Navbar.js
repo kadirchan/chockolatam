@@ -1,10 +1,22 @@
+import { Link } from "react-router-dom";
 import ConnectButton from "./ConnectButton";
 
 const Navbar = () => {
     return (
-        <div>
-            <h1>Navbar</h1>
-            <ConnectButton />
+        <div className='d-flex w-100 flex-row justify-content-between align-items-center'>
+            <div className='d-flex'>Chockolatam</div>
+
+            <Link to='/create' className='link'>
+                Create Link
+            </Link>
+
+            <Link to='/send' className='link'>
+                Send
+            </Link>
+
+            <div className='d-flex'>
+                <ConnectButton />
+            </div>
         </div>
     );
 };
