@@ -25,7 +25,7 @@ const metadata = {
     icons: ["https://avatars.githubusercontent.com/u/37784886"],
 };
 
-const wagmiConfig = createConfig({
+export const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: [
         new WalletConnectConnector({
