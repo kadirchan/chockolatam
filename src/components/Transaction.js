@@ -1,4 +1,4 @@
-const Send = () => {
+const Transaction = () => {
     return (
         <div>
             <h1>Send</h1>
@@ -6,4 +6,4 @@ const Send = () => {
     );
 };
 
-export default Send;
+export default Transaction;
