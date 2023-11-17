@@ -1,10 +1,9 @@
 import { createWeb3Modal } from "@web3modal/wagmi/react";
-import { walletConnectProvider, EIP6963Connector } from "@web3modal/wagmi";
+import { walletConnectProvider } from "@web3modal/wagmi";
 
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { configureChains, createConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { arbitrumGoerli, goerli, mainnet, zkSyncTestnet } from "viem/chains";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { arbitrumGoerli, goerli, zkSyncTestnet } from "viem/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import { walletconnect_id } from "../utils/secret";
