@@ -17,7 +17,7 @@ root.render(
                 <Routes>
                     <Route path='/' element={<CreateLink />} />
                     <Route path='/create' element={<CreateLink />} />
-                    <Route path='/send:code' element={<Send />} />
+                    <Route path='/send/:code' element={<Send />} />
                     <Route path='/send' element={<Send />} />
                 </Routes>
             </BrowserRouter>
