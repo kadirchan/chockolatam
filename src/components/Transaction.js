@@ -79,33 +79,44 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
         } else {
             if (selectedChain === destination_chain) {
                 // internal transaction
+                console.log("internal transaction");
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
-                    await depositToZkSync(signer, receiver_address, amount, token);
+                    console.log("depositing to zkSync");
+                    const token_address = Networks[5]["tokens"][token].address;
+                    await depositToZkSync(signer, receiver_address, amount, token_address);
                 } else {
-                    await depositToArbitrum(signer, amount, token);
+                    console.log("depositing to arbitrum");
+                    const token_address = Networks[5]["tokens"][token].address;
+                    await depositToArbitrum(signer, amount, token_address);
                 }
             } else {
-                if (destination_chain === 280) {
-                    await withdrawFromZkSync(receiver_address, amount, token);
-                } else {
-                    await withdrawFromArbitrum(signer, receiver_address, amount, token);
+                if (selectedChain === 280) {
+                    console.log("withdrawing from zkSync");
+                    const token_address = Networks[5]["tokens"][token].address;
+                    await withdrawFromZkSync(receiver_address, amount, token_address);
+                } else if (selectedChain === 421613) {
+                    console.log("withdrawing from arbitrum");
+                    const token_address = Networks[5]["tokens"][token].address;
+                    await withdrawFromArbitrum(signer, receiver_address, amount, token_address);
                 }
             }
         }
     };
 
     return (
-        <div className='page flex-row'>
-            <div>
-                {" "}
-                {receiver_address} {token} {destination_chain}{" "}
+        <div className='page'>
+            <div className='d-flex'>
+                You are sending {amount} {token} to {receiver_address}. Select the chain you want to
+                send it on.
             </div>
             <div className='d-flex flex-column w-33' style={{ gap: "32px" }}>
                 {balancesReady ? (
                     Object.keys(Networks).map((chainID) => {
                         const network_name = Networks[Number(chainID)].name;
-                        const balance = ethers.utils.formatEther(balances[chainID][token]);
+                        const balance =
+                            ethers.utils.formatEther(balances[chainID][token]) *
+                            10 ** (18 - Networks[Number(chainID)].tokens[token].decimals);
                         return (
                             <div className='d-flex flex-row justify-content-between'>
                                 {selectedChain === Number(chainID) ? <div>Selected</div> : null}

@@ -43,9 +43,9 @@ const CreateLink = () => {
         setFormData({ ...formData, address: address });
     };
 
-    const handlePushReceiverChange = (e) => {
-        setPushReceiver(e.target.value);
-    };
+    // const handlePushReceiverChange = (e) => {
+    //     setPushReceiver(e.target.value);
+    // };
 
     const generateLink = () => {
         if (formData.address !== "" && formData.amount > 0) {
@@ -64,6 +64,7 @@ const CreateLink = () => {
 
     return (
         <div className='page'>
+            <div>0xd8A7dCA6aFF69B4287A0bFa7A5D4ddFd7Cc7c2f8</div>
             <div className='d-flex'>
                 <label>
                     Address:
