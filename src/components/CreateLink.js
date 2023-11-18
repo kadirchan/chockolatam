@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAccount } from "wagmi";
-// import { Push } from "../utils/Push";
+import { Push } from "../utils/Push";
 import { Signer } from "ethers";
 import { useEthersSigner } from "../utils/ethersConverter";
 
@@ -43,9 +43,9 @@ const CreateLink = () => {
         setFormData({ ...formData, address: address });
     };
 
-    // const handlePushReceiverChange = (e) => {
-    //     setPushReceiver(e.target.value);
-    // };
+    const handlePushReceiverChange = (e) => {
+        setPushReceiver(e.target.value);
+    };
 
     const generateLink = () => {
         if (formData.address !== "" && formData.amount > 0) {
@@ -106,7 +106,7 @@ const CreateLink = () => {
             {link.ready ? (
                 <div className='d-flex w-100 justify-content-center flex-column'>
                     <div className='d-flex'>{link.text}</div>
-                    {/* <div className='d-flex'>Send message with Push!</div>
+                    <div className='d-flex'>Send message with Push!</div>
                     <div className='d-flex'>
                         <label>
                             Receiver address{" "}
@@ -118,12 +118,12 @@ const CreateLink = () => {
                         </label>
                         <button
                             onClick={() => {
-                                Push(Signer, pushReceiver, link.text);
+                                Push(signer, pushReceiver, link.text);
                             }}
                         >
                             send
                         </button>
-                    </div> */}
+                    </div>
                 </div>
             ) : null}
         </div>

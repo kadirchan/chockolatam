@@ -9,7 +9,7 @@ export const Push = async (signer, receiver_address, text) => {
         console.log(userAlice);
         const aliceMessagesBob = await userAlice.chat.send(receiver_address, {
             type: "Text",
-            content: text,
+            content: "Please send me some fund with that link: " + text,
         });
         console.log(aliceMessagesBob);
     } catch (e) {

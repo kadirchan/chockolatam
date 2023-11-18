@@ -94,6 +94,7 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                 }
             }
         } else {
+            amount = amount.div("1000000000000");
             if (selectedChain === destination_chain) {
                 // internal transaction
                 console.log("internal transaction");
