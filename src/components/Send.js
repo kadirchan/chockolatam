@@ -3,6 +3,7 @@ import Transaction from "./Transaction";
 import { getAllBalances } from "../utils/GetBalances";
 import { Networks } from "../utils/env";
 import { useEthersSigner } from "../utils/ethersConverter";
+import { ethers } from "ethers";
 
 const Send = () => {
     const [sendCode, setSendCode] = useState("");
@@ -66,9 +67,9 @@ const Send = () => {
                 <div className='inner-page'>
                     <Transaction
                         receiver_address={formData.address}
-                        amount={formData.amount}
+                        amount={ethers.utils.parseEther("" + formData.amount)}
                         token={formData.token}
-                        chain={formData.chain}
+                        destination_chain={Number(formData.chain)}
                     />
                 </div>
             ) : (

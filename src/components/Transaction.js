@@ -5,8 +5,8 @@ import { Networks } from "../utils/env";
 import { ethers } from "ethers";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 import { switchNetwork } from "@wagmi/core";
-import { depositToZkSync } from "../utils/ZkSync";
-import { depositToArbitrum } from "../utils/Arbitrum";
+import { depositToZkSync, withdrawFromZkSync } from "../utils/ZkSync";
+import { depositToArbitrum, withdrawFromArbitrum } from "../utils/Arbitrum";
 
 const Transaction = ({ receiver_address, amount, token, destination_chain }) => {
     const signer = useEthersSigner();
@@ -48,24 +48,46 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                 // internal transaction
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
+                    console.log("depositing to zkSync");
                     await depositToZkSync(signer, receiver_address, amount);
                 } else {
+                    console.log("depositing to arbitrum");
                     await depositToArbitrum(signer, amount);
                 }
             } else {
                 if (destination_chain === 280) {
-                    // withdraw from zkSync
+                    console.log("withdrawing from zkSync");
+                    await withdrawFromZkSync(receiver_address, amount);
                 } else {
-                    // withdraw from Arbitrum
+                    console.log("withdrawing from arbitrum");
+                    await withdrawFromArbitrum(signer, receiver_address, amount);
                 }
             }
         } else {
-            // send ERC20
+            if (selectedChain === destination_chain) {
+                // internal transaction
+            } else if (selectedChain === 5) {
+                if (destination_chain === 280) {
+                    await depositToZkSync(signer, receiver_address, amount, token);
+                } else {
+                    await depositToArbitrum(signer, amount, token);
+                }
+            } else {
+                if (destination_chain === 280) {
+                    await withdrawFromZkSync(receiver_address, amount, token);
+                } else {
+                    await withdrawFromArbitrum(signer, receiver_address, amount, token);
+                }
+            }
         }
     };
 
     return (
         <div className='page flex-row'>
+            <div>
+                {" "}
+                {receiver_address} {token} {destination_chain}{" "}
+            </div>
             <div className='d-flex flex-column w-33' style={{ gap: "32px" }}>
                 {balancesReady ? (
                     Object.keys(Networks).map((chainID) => {
@@ -73,13 +95,13 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                         const balance = ethers.utils.formatEther(balances[chainID][token]);
                         return (
                             <div className='d-flex flex-row justify-content-between'>
-                                {selectedChain === chainID ? <div>Selected</div> : null}
+                                {selectedChain === Number(chainID) ? <div>Selected</div> : null}
                                 <div>
                                     {network_name} : {balance}
                                 </div>
                                 <div
                                     onClick={() => {
-                                        setSelectedChain(chainID);
+                                        setSelectedChain(Number(chainID));
                                     }}
                                 >
                                     Select

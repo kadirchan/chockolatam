@@ -1,4 +1,4 @@
-import { Provider, Signer, utils, L1Signer, Web3Provider } from "zksync-web3";
+import { Provider, utils, L1Signer, Web3Provider } from "zksync-web3";
 
 export const depositToZkSync = async (signer, receiver_address, amount, token_address) => {
     try {
