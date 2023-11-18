@@ -6,9 +6,8 @@ import { publicProvider } from "wagmi/providers/public";
 import { arbitrumGoerli, goerli, zkSyncTestnet } from "viem/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { walletconnect_id } from "../utils/secret";
 
-const projectId = walletconnect_id;
+const projectId = process.env.WALLETCONNECT_ID;
 
 const { chains, publicClient } = configureChains(
     [goerli, zkSyncTestnet, arbitrumGoerli],

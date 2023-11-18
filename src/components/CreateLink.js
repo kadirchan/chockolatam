@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAccount } from "wagmi";
 import { Push } from "../utils/Push";
-import { Signer } from "ethers";
 import { useEthersSigner } from "../utils/ethersConverter";
 
 const CreateLink = () => {
@@ -71,7 +70,9 @@ const CreateLink = () => {
                     <input type='text' value={formData.address} onChange={handleAddressChange} />
                 </label>
 
-                <div onClick={copyAddress}>Copy My Address</div>
+                <button className='button-dark' onClick={copyAddress}>
+                    Copy My Address
+                </button>
             </div>
 
             <div className='d-flex'>

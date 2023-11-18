@@ -101,6 +101,7 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
                     console.log("depositing to zkSync");
+                    console.log(receiver_address, amount, token, destination_chain);
                     const token_address = Networks[5]["tokens"][token].address;
                     await depositToZkSync(signer, receiver_address, amount, token_address);
                 } else {
