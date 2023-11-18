@@ -7,8 +7,10 @@ import { useNetwork, useSwitchNetwork } from "wagmi";
 import { switchNetwork } from "@wagmi/core";
 import { depositToZkSync, withdrawFromZkSync } from "../utils/ZkSync";
 import { depositToArbitrum, withdrawFromArbitrum } from "../utils/Arbitrum";
+import { connectSnap, getSnap } from "../utils/Snap";
 
 const Transaction = ({ receiver_address, amount, token, destination_chain }) => {
+    console.log(receiver_address, amount, token, destination_chain);
     const signer = useEthersSigner();
 
     const [balances, setBalances] = useState({});
@@ -16,8 +18,19 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
 
     const [selectedChain, setSelectedChain] = useState(null);
 
+    const [snapInstalled, setSnapInstalled] = useState(false);
+
     // const { switchNetwork } = useSwitchNetwork();
     const { chain } = useNetwork();
+
+    const handleConnectClick = async () => {
+        try {
+            await connectSnap();
+            const installedSnap = await getSnap();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         const fetchBalances = async () => {
@@ -29,6 +42,10 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
         };
         if (signer) {
             fetchBalances();
+            if (!snapInstalled) {
+                handleConnectClick();
+                setSnapInstalled(true);
+            }
         }
     }, [signer]);
 
@@ -106,11 +123,11 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
 
     return (
         <div className='page'>
-            <div className='d-flex'>
-                You are sending {amount} {token} to {receiver_address}. Select the chain you want to
-                send it on.
+            <div className='d-flex w-66'>
+                You are sending {ethers.utils.formatEther(amount)} {token} to {receiver_address}.
             </div>
-            <div className='d-flex flex-column w-33' style={{ gap: "32px" }}>
+            <div className='d-flex w-66'>Select the chain you want to send it on.</div>
+            <div className='d-flex flex-column w-66' style={{ gap: "32px" }}>
                 {balancesReady ? (
                     Object.keys(Networks).map((chainID) => {
                         const network_name = Networks[Number(chainID)].name;
@@ -119,17 +136,20 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                             10 ** (18 - Networks[Number(chainID)].tokens[token].decimals);
                         return (
                             <div className='d-flex flex-row justify-content-between'>
-                                {selectedChain === Number(chainID) ? <div>Selected</div> : null}
-                                <div>
+                                {selectedChain === Number(chainID) ? (
+                                    <div className='d-flex'>Selected</div>
+                                ) : null}
+                                <div className='d-flex'>
                                     {network_name} : {balance}
                                 </div>
-                                <div
+                                <button
+                                    className='button-dark'
                                     onClick={() => {
                                         setSelectedChain(Number(chainID));
                                     }}
                                 >
                                     Select
-                                </div>
+                                </button>
                             </div>
                         );
                     })
@@ -137,8 +157,12 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                     <div>Loading...</div>
                 )}
             </div>
-            <div className='d-flex'>
-                {selectedChain !== null ? <button onClick={sendTransaction}>Send</button> : null}
+            <div className='d-flex w-66 '>
+                {selectedChain !== null ? (
+                    <button className='button-dark' onClick={sendTransaction}>
+                        Send
+                    </button>
+                ) : null}
             </div>
         </div>
     );

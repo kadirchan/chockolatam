@@ -41,3 +41,11 @@ body {
     border: 1px solid #ffffff;
     border-radius: 4px;
 }
+.link {
+    text-decoration: none;
+    color: #00ff00;
+}
+.link:hover {
+    text-decoration: underline;
+    color: #00ff00;
+}
