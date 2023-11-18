@@ -1,4 +1,4 @@
-const Networks = {
+export const Networks = {
     5: {
         name: "Goerli",
         explorer: "https://goerli.etherscan.io",

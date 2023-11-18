@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Transaction from "./Transaction";
+import { getAllBalances } from "../utils/GetBalances";
+import { Networks } from "../utils/env";
 
 const Send = () => {
     const [sendCode, setSendCode] = useState("");
@@ -10,7 +12,10 @@ const Send = () => {
         amount: null,
         address: null,
     });
+    const [balances, setBalances] = useState({});
     const [formDataReady, setFormDataReady] = useState(false);
+
+    const signer = useEthersSigner();
 
     const handleInputChange = (e) => {
         setSendCode(e.target.value);
@@ -33,8 +38,24 @@ const Send = () => {
         }
     };
 
+    useEffect(() => {
+        if (formDataReady && signer) {
+            getAllBalances(signer).then((balances) => {
+                setBalances(balances);
+            });
+        }
+    }, [signer, formData]);
+
     return (
         <div className='page'>
+            <div className='d-flex w-25 flex-column'>
+                {Object.keys(balances).map((chainID) => {
+                    const network = Networks[chainID];
+
+                    return <div></div>;
+                })}
+            </div>
+
             {userApproved ? (
                 <div className='inner-page'>
                     <Transaction />
