@@ -1,5 +1,4 @@
 import { Provider, Signer, utils, L1Signer, Web3Provider } from "zksync-web3";
-import { ethers } from "ethers";
 
 export const depositToZkSync = async (signer, receiver_address, amount, token_address) => {
     try {
@@ -7,7 +6,13 @@ export const depositToZkSync = async (signer, receiver_address, amount, token_ad
         const ZkSyncSigner = L1Signer.from(signer, ZksyncProvider);
 
         if (token_address) {
-            //deposit erc20
+            const depositTx = await ZkSyncSigner.deposit({
+                token: token_address,
+                amount: amount,
+                to: receiver_address,
+                approveERC20: true,
+            });
+            await depositTx.wait();
         } else {
             const depositTx = await ZkSyncSigner.deposit({
                 token: utils.ETH_ADDRESS,
@@ -21,13 +26,18 @@ export const depositToZkSync = async (signer, receiver_address, amount, token_ad
     }
 };
 
-export const withdrawFromZkSync = async (signer, receiver_address, amount, token_address) => {
+export const withdrawFromZkSync = async (receiver_address, amount, token_address) => {
     try {
         const ZksyncProvider = new Web3Provider(window.ethereum);
         const ZkSyncSigner = ZksyncProvider.getSigner();
 
         if (token_address) {
-            //withdraw erc20
+            const withdrawTx = await ZkSyncSigner.withdraw({
+                token: token_address,
+                amount: amount,
+                to: receiver_address,
+            });
+            await withdrawTx.wait();
         } else {
             const withdrawTx = await ZkSyncSigner.withdraw({
                 token: utils.ETH_ADDRESS,
@@ -38,5 +48,28 @@ export const withdrawFromZkSync = async (signer, receiver_address, amount, token
         }
     } catch (err) {
         console.log(err);
+    }
+};
+
+export const internalTransaction = async (receiver_address, amount, token_address) => {
+    const ZksyncProvider = new Web3Provider(window.ethereum);
+    const zkSyncSigner = ZksyncProvider.getSigner();
+    try {
+        if (token_address) {
+            //Todo
+            const tx = await zkSyncSigner.sendTransaction({
+                to: receiver_address,
+                value: amount,
+                token: token_address,
+            });
+        } else {
+            const tx = await zkSyncSigner.sendTransaction({
+                to: receiver_address,
+                value: amount,
+            });
+            await tx.wait();
+        }
+    } catch (e) {
+        console.log(e);
     }
 };

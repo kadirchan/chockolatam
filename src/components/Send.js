@@ -44,7 +44,6 @@ const Send = () => {
         console.log(signer);
         const fetchBalances = async () => {
             const balance = await getAllBalances(signer);
-            console.log(balances);
             setBalances(balance);
         };
         if (formDataReady && signer) {
@@ -68,7 +67,7 @@ const Send = () => {
                     <Transaction
                         receiver_address={formData.address}
                         amount={formData.amount}
-                        token_address={formData.token}
+                        token={formData.token}
                         chain={formData.chain}
                     />
                 </div>

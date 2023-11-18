@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@arbitrum/sdk": "^3.1.13",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@fontsource/roboto": "^5.0.8",
@@ -19,7 +20,8 @@
         "viem": "^1.19.3",
         "wagmi": "^1.4.7",
         "web-vitals": "^2.1.4",
-        "zksync-web3": "^0.16.0"
+        "zksync-web3": "^0.16.0",
+        "ethers": "^5.7"
     },
     "scripts": {
         "start": "GENERATE_SOURCEMAP=false react-scripts start",
