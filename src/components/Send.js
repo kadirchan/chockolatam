@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Transaction from "./Transaction";
 import { getAllBalances } from "../utils/GetBalances";
 import { Networks } from "../utils/env";
+import { useEthersSigner } from "../utils/ethersConverter";
 
 const Send = () => {
     const [sendCode, setSendCode] = useState("");
@@ -39,26 +40,37 @@ const Send = () => {
     };
 
     useEffect(() => {
+        console.log(formDataReady);
+        console.log(signer);
+        const fetchBalances = async () => {
+            const balance = await getAllBalances(signer);
+            console.log(balances);
+            setBalances(balance);
+        };
         if (formDataReady && signer) {
-            getAllBalances(signer).then((balances) => {
-                setBalances(balances);
-            });
+            fetchBalances();
         }
     }, [signer, formData]);
 
     return (
         <div className='page'>
-            <div className='d-flex w-25 flex-column'>
+            {/* <div className='d-flex w-25 flex-column'>
                 {Object.keys(balances).map((chainID) => {
-                    const network = Networks[chainID];
+                    const network = Networks[Number(chainID)];
+                    const balance = balances[]
 
                     return <div></div>;
                 })}
-            </div>
+            </div> */}
 
             {userApproved ? (
                 <div className='inner-page'>
-                    <Transaction />
+                    <Transaction
+                        receiver_address={formData.address}
+                        amount={formData.amount}
+                        token_address={formData.token}
+                        chain={formData.chain}
+                    />
                 </div>
             ) : (
                 <div className='inner-page'>
