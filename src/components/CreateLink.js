@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useAccount } from "wagmi";
+// import { Push } from "../utils/Push";
+import { Signer } from "ethers";
+import { useEthersSigner } from "../utils/ethersConverter";
 
 const CreateLink = () => {
     const [link, setLink] = useState({
@@ -14,7 +17,11 @@ const CreateLink = () => {
         address: "",
     });
 
+    const [pushReceiver, setPushReceiver] = useState("");
+
     const { address } = useAccount();
+
+    const signer = useEthersSigner();
 
     const handleChainChange = (e) => {
         setFormData({ ...formData, chain: e.target.value });
@@ -34,6 +41,10 @@ const CreateLink = () => {
 
     const copyAddress = () => {
         setFormData({ ...formData, address: address });
+    };
+
+    const handlePushReceiverChange = (e) => {
+        setPushReceiver(e.target.value);
     };
 
     const generateLink = () => {
@@ -91,7 +102,29 @@ const CreateLink = () => {
             <div className='d-flex' onClick={generateLink}>
                 Generate Link
             </div>
-            {link.ready ? <div className='d-flex'> {link.text} </div> : null}
+            {link.ready ? (
+                <div className='d-flex w-100 justify-content-center flex-column'>
+                    <div className='d-flex'>{link.text}</div>
+                    {/* <div className='d-flex'>Send message with Push!</div>
+                    <div className='d-flex'>
+                        <label>
+                            Receiver address{" "}
+                            <input
+                                type='text'
+                                value={pushReceiver}
+                                onChange={handlePushReceiverChange}
+                            />
+                        </label>
+                        <button
+                            onClick={() => {
+                                Push(Signer, pushReceiver, link.text);
+                            }}
+                        >
+                            send
+                        </button>
+                    </div> */}
+                </div>
+            ) : null}
         </div>
     );
 };
