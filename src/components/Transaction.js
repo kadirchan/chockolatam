@@ -10,6 +10,8 @@ const Transaction = ({ receiver_address, amount, token, chain }) => {
     const [balances, setBalances] = useState({});
     const [balancesReady, setBalancesReady] = useState(false);
 
+    const [selectedChain, setSelectedChain] = useState(null);
+
     useEffect(() => {
         const fetchBalances = async () => {
             console.log(signer);
@@ -24,15 +26,25 @@ const Transaction = ({ receiver_address, amount, token, chain }) => {
     }, [signer]);
 
     return (
-        <div className='page'>
+        <div className='page flex-row'>
             <div className='d-flex flex-column w-33' style={{ gap: "32px" }}>
                 {balancesReady ? (
                     Object.keys(Networks).map((chainID) => {
                         const network_name = Networks[Number(chainID)].name;
                         const balance = ethers.utils.formatEther(balances[chainID][token]);
                         return (
-                            <div className='d-flex'>
-                                {network_name} : {balance}
+                            <div className='d-flex flex-row justify-content-between'>
+                                {selectedChain === chainID ? <div>Selected</div> : null}
+                                <div>
+                                    {network_name} : {balance}
+                                </div>
+                                <div
+                                    onClick={() => {
+                                        setSelectedChain(chainID);
+                                    }}
+                                >
+                                    Select
+                                </div>
                             </div>
                         );
                     })
@@ -40,7 +52,7 @@ const Transaction = ({ receiver_address, amount, token, chain }) => {
                     <div>Loading...</div>
                 )}
             </div>
-            <div></div>
+            <div className='d-flex'>{selectedChain !== null ? <button>Send</button> : null}</div>
         </div>
     );
 };
