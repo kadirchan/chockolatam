@@ -16,7 +16,7 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
 
     const [selectedChain, setSelectedChain] = useState(null);
 
-    const { switchNetwork } = useSwitchNetwork();
+    // const { switchNetwork } = useSwitchNetwork();
     const { chain } = useNetwork();
 
     useEffect(() => {
@@ -33,9 +33,11 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
     }, [signer]);
 
     const sendTransaction = async () => {
-        if (selectedChain !== chain) {
+        console.log("selected", typeof selectedChain, selectedChain, "current", chain.id);
+        if (selectedChain !== chain.id) {
+            console.log("switching network");
             try {
-                const network = await switchNetwork({
+                await switchNetwork({
                     chainId: selectedChain,
                 });
             } catch (e) {
@@ -43,9 +45,20 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
             }
         }
 
+        console.log(
+            typeof token,
+            token,
+            typeof destination_chain,
+            destination_chain,
+            typeof amount,
+            amount,
+            typeof selectedChain,
+            selectedChain
+        );
         if (token === "ETH") {
             if (selectedChain === destination_chain) {
                 // internal transaction
+                console.log("internal transaction");
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
                     console.log("depositing to zkSync");
@@ -55,10 +68,10 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                     await depositToArbitrum(signer, amount);
                 }
             } else {
-                if (destination_chain === 280) {
+                if (selectedChain === 280) {
                     console.log("withdrawing from zkSync");
                     await withdrawFromZkSync(receiver_address, amount);
-                } else {
+                } else if (selectedChain === 421613) {
                     console.log("withdrawing from arbitrum");
                     await withdrawFromArbitrum(signer, receiver_address, amount);
                 }

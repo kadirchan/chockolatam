@@ -84,7 +84,7 @@ const CreateLink = () => {
             </div>
             <div className='d-flex'>
                 <label>
-                    Address:
+                    Amount:
                     <input type='number' value={formData.amount} onChange={handleAmountChange} />
                 </label>
             </div>
