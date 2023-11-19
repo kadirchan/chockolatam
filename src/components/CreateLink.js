@@ -63,7 +63,7 @@ const CreateLink = () => {
 
     return (
         <div className='page'>
-            <div>0xd8A7dCA6aFF69B4287A0bFa7A5D4ddFd7Cc7c2f8</div>
+            {/* <div>0xd8A7dCA6aFF69B4287A0bFa7A5D4ddFd7Cc7c2f8</div> */}
             <div className='d-flex' style={{ gap: "16px" }}>
                 <label>
                     Address:
@@ -119,7 +119,9 @@ const CreateLink = () => {
                     className='d-flex justify-content-center align-items-center flex-column py-3'
                     style={{ borderTop: "1px solid #FFF", gap: "16px" }}
                 >
-                    <div className='d-flex'>{link.text}</div>
+                    <div className='d-flex'>
+                        <a href={link.text}>{link.text}</a>
+                    </div>
                     <div className='d-flex'>Send message with Push!</div>
                     <div className='d-flex' style={{ gap: "16px" }}>
                         <label>

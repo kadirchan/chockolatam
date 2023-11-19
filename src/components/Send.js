@@ -4,9 +4,11 @@ import { getAllBalances } from "../utils/GetBalances";
 import { Networks } from "../utils/env";
 import { useEthersSigner } from "../utils/ethersConverter";
 import { ethers } from "ethers";
+import { useParams } from "react-router-dom";
 
 const Send = () => {
-    const [sendCode, setSendCode] = useState("");
+    const { code } = useParams();
+    const [sendCode, setSendCode] = useState(code ? `${code}` : "");
     const [userApproved, setUserApproved] = useState(false);
     const [formData, setFormData] = useState({
         chain: null,
@@ -96,7 +98,6 @@ const Send = () => {
                         </div>
                     ) : (
                         <div className='inner-page'>
-                            <p>0xAc0B4B967C8599C4A978048e2E4B6578d551CF24_5_ETH_0.001</p>
                             <div className='d-flex'>
                                 <label>
                                     Chockolat Address:

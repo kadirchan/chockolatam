@@ -81,6 +81,7 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                     value: amount,
                 };
                 const txHash = await signer.sendTransaction(tx);
+                await txHash.wait();
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
                     console.log("depositing to zkSync");
@@ -103,6 +104,32 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
             if (selectedChain === destination_chain) {
                 // internal transaction
                 console.log("internal transaction");
+                const tokenAbi = ["function transfer(address to, uint256 amount) returns (bool)"];
+                if (selectedChain === 5) {
+                    const contract = new ethers.Contract(
+                        "0xd35CCeEAD182dcee0F148EbaC9447DA2c4D449c4",
+                        tokenAbi,
+                        signer
+                    );
+                    const tx = contract.trasfer(receiver_address, amount);
+                    await tx.wait();
+                } else if (selectedChain === 280) {
+                    const contract = new ethers.Contract(
+                        "0x0faF6df7054946141266420b43783387A78d82A9",
+                        tokenAbi,
+                        signer
+                    );
+                    const tx = contract.trasfer(receiver_address, amount);
+                    await tx.wait();
+                } else if (selectedChain === 421613) {
+                    const contract = new ethers.Contract(
+                        "0xEA70a40Df1432A1b38b916A51Fb81A4cc805a963",
+                        tokenAbi,
+                        signer
+                    );
+                    const tx = contract.trasfer(receiver_address, amount);
+                    await tx.wait();
+                }
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
                     console.log("depositing to zkSync");
