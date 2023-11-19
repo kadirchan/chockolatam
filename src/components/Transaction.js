@@ -76,6 +76,11 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
             if (selectedChain === destination_chain) {
                 // internal transaction
                 console.log("internal transaction");
+                const tx = {
+                    to: receiver_address,
+                    value: amount,
+                };
+                const txHash = await signer.sendTransaction(tx);
             } else if (selectedChain === 5) {
                 if (destination_chain === 280) {
                     console.log("depositing to zkSync");
@@ -129,7 +134,7 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                 You are sending {ethers.utils.formatEther(amount)} {token} to {receiver_address}.
             </div>
             <div className='d-flex w-66'>Select the chain you want to send it on.</div>
-            <div className='d-flex flex-column w-66' style={{ gap: "32px" }}>
+            <div className='d-flex flex-column w-66' style={{ gap: "48px" }}>
                 {balancesReady ? (
                     Object.keys(Networks).map((chainID) => {
                         const network_name = Networks[Number(chainID)].name;
@@ -137,21 +142,33 @@ const Transaction = ({ receiver_address, amount, token, destination_chain }) => 
                             ethers.utils.formatEther(balances[chainID][token]) *
                             10 ** (18 - Networks[Number(chainID)].tokens[token].decimals);
                         return (
-                            <div className='d-flex flex-row justify-content-between'>
-                                {selectedChain === Number(chainID) ? (
-                                    <div className='d-flex'>Selected</div>
-                                ) : null}
+                            <div
+                                className='d-flex flex-row justify-content-between'
+                                style={{ width: "500px" }}
+                            >
                                 <div className='d-flex'>
                                     {network_name} : {balance}
                                 </div>
-                                <button
-                                    className='button-dark'
-                                    onClick={() => {
-                                        setSelectedChain(Number(chainID));
-                                    }}
-                                >
-                                    Select
-                                </button>
+
+                                {selectedChain === Number(chainID) ? (
+                                    <button
+                                        className='button-red'
+                                        onClick={() => {
+                                            setSelectedChain(Number(chainID));
+                                        }}
+                                    >
+                                        Selected
+                                    </button>
+                                ) : (
+                                    <button
+                                        className='button-dark'
+                                        onClick={() => {
+                                            setSelectedChain(Number(chainID));
+                                        }}
+                                    >
+                                        Select
+                                    </button>
+                                )}
                             </div>
                         );
                     })

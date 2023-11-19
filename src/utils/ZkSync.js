@@ -28,8 +28,9 @@ export const depositToZkSync = async (signer, receiver_address, amount, token_ad
 
 export const withdrawFromZkSync = async (receiver_address, amount, token_address) => {
     try {
-        const ZksyncProvider = new Web3Provider(window.ethereum);
-        const ZkSyncSigner = ZksyncProvider.getSigner();
+        const ZksyncProvider = new Provider("https://testnet.era.zksync.dev");
+        const ZkSyncSigner = new Web3Provider(window.ethereum).getSigner();
+        console.log(ZkSyncSigner);
 
         if (token_address) {
             const withdrawTx = await ZkSyncSigner.withdraw({

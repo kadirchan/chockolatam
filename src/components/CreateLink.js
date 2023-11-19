@@ -64,10 +64,15 @@ const CreateLink = () => {
     return (
         <div className='page'>
             <div>0xd8A7dCA6aFF69B4287A0bFa7A5D4ddFd7Cc7c2f8</div>
-            <div className='d-flex'>
+            <div className='d-flex' style={{ gap: "16px" }}>
                 <label>
                     Address:
-                    <input type='text' value={formData.address} onChange={handleAddressChange} />
+                    <input
+                        className='mx-3'
+                        type='text'
+                        value={formData.address}
+                        onChange={handleAddressChange}
+                    />
                 </label>
 
                 <button className='button-dark' onClick={copyAddress}>
@@ -75,7 +80,7 @@ const CreateLink = () => {
                 </button>
             </div>
 
-            <div className='d-flex'>
+            <div className='d-flex' style={{ gap: "16px" }}>
                 <label>
                     Network :
                     <select value={formData.chain} onChange={handleChainChange}>
@@ -86,7 +91,7 @@ const CreateLink = () => {
                 </label>
             </div>
 
-            <div className='d-flex'>
+            <div className='d-flex' style={{ gap: "16px" }}>
                 <label>
                     Fund :
                     <select value={formData.token} onChange={handleTokenChange}>
@@ -98,26 +103,36 @@ const CreateLink = () => {
             <div className='d-flex'>
                 <label>
                     Amount:
-                    <input type='number' value={formData.amount} onChange={handleAmountChange} />
+                    <input
+                        className='mx-3'
+                        type='number'
+                        value={formData.amount}
+                        onChange={handleAmountChange}
+                    />
                 </label>
             </div>
-            <div className='d-flex' onClick={generateLink}>
+            <button className='button-dark d-flex' onClick={generateLink}>
                 Generate Link
-            </div>
+            </button>
             {link.ready ? (
-                <div className='d-flex w-100 justify-content-center flex-column'>
+                <div
+                    className='d-flex justify-content-center align-items-center flex-column py-3'
+                    style={{ borderTop: "1px solid #FFF", gap: "16px" }}
+                >
                     <div className='d-flex'>{link.text}</div>
                     <div className='d-flex'>Send message with Push!</div>
-                    <div className='d-flex'>
+                    <div className='d-flex' style={{ gap: "16px" }}>
                         <label>
                             Receiver address{" "}
                             <input
+                                className='mx-3'
                                 type='text'
                                 value={pushReceiver}
                                 onChange={handlePushReceiverChange}
                             />
                         </label>
                         <button
+                            className='button-dark'
                             onClick={() => {
                                 Push(signer, pushReceiver, link.text);
                             }}

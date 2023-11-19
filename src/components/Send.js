@@ -54,15 +54,6 @@ const Send = () => {
 
     return (
         <div className='page'>
-            {/* <div className='d-flex w-25 flex-column'>
-                {Object.keys(balances).map((chainID) => {
-                    const network = Networks[Number(chainID)];
-                    const balance = balances[]
-
-                    return <div></div>;
-                })}
-            </div> */}
-
             {userApproved ? (
                 <div className='inner-page'>
                     <Transaction
@@ -74,27 +65,33 @@ const Send = () => {
                 </div>
             ) : (
                 <div className='inner-page'>
-                    <h1>Send</h1>
+                    <div className='d-flex my-3'>
+                        <h2>Send</h2>
+                    </div>
                     {formDataReady ? (
                         <div className='inner-page'>
                             <div>
                                 {" "}
                                 {formData.address} wants {formData.amount} {formData.token} to{" "}
-                                {formData.chain} from you.{" "}
+                                {Networks[Number(formData.chain)].name} from you.{" "}
                             </div>
-                            <div
-                                onClick={() => {
-                                    setUserApproved(true);
-                                }}
-                            >
-                                Accept
-                            </div>
-                            <div
-                                onClick={() => {
-                                    setFormDataReady(false);
-                                }}
-                            >
-                                Reject
+                            <div className='d-flex flex-row' style={{ gap: "32px" }}>
+                                <button
+                                    className='button-dark'
+                                    onClick={() => {
+                                        setUserApproved(true);
+                                    }}
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    className='button-dark'
+                                    onClick={() => {
+                                        setFormDataReady(false);
+                                    }}
+                                >
+                                    Reject
+                                </button>
                             </div>
                         </div>
                     ) : (
@@ -104,15 +101,16 @@ const Send = () => {
                                 <label>
                                     Chockolat Address:
                                     <input
+                                        className='mx-3'
                                         type='text'
                                         value={sendCode}
                                         onChange={handleInputChange}
                                     />
                                 </label>
                             </div>
-                            <div className='d-flex' onClick={decodeSendCode}>
-                                send
-                            </div>
+                            <button className='button-dark' onClick={decodeSendCode}>
+                                Send
+                            </button>
                         </div>
                     )}
                 </div>

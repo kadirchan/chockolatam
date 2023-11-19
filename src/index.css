@@ -41,11 +41,35 @@ body {
     border: 1px solid #ffffff;
     border-radius: 4px;
 }
+
+.button-red {
+    cursor: pointer;
+    width: auto;
+    height: 40px;
+    padding: 8px 16px 8px 16px;
+    text-align: center;
+    background: black;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    border-radius: 4px;
+}
+
 .link {
     text-decoration: none;
     color: #00ff00;
 }
 .link:hover {
     text-decoration: underline;
+    color: #00ff00;
+}
+.navbar {
+    display: flex;
+    width: 100%;
+    padding: 16px 24px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #000000;
+    height: 80px;
+    border-bottom: 1px solid #ffffff;
     color: #00ff00;
 }
